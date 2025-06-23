@@ -1,0 +1,24 @@
+{
+  "vercel": {
+    "name": "Deploy to Vercel",
+    "url": "https://vercel.com/new/clone",
+    "params": {
+      "repository-url": "https://github.com/yourusername/ai-social-platform",
+      "env": ["OPENAI_API_KEY", "AYRSHARE_API_KEY", "NEXT_PUBLIC_BASE_URL"]
+    }
+  },
+  "netlify": {
+    "name": "Deploy to Netlify",
+    "url": "https://app.netlify.com/start/deploy",
+    "params": {
+      "repository": "https://github.com/yourusername/ai-social-platform"
+    }
+  },
+  "railway": {
+    "name": "Deploy on Railway",
+    "url": "https://railway.app/new/template",
+    "params": {
+      "template": "your-template-id"
+    }
+  }
+}

@@ -12,6 +12,7 @@ import { Slider } from "@/components/ui/slider"
 import { Badge } from "@/components/ui/badge"
 import { Loader2, Copy, Save, Send, Sparkles, Zap } from "lucide-react"
 import { toast } from "sonner"
+import { AyrsharePublisher } from "./ayrshare-publisher"
 
 interface GeneratedContent {
   platform: string
@@ -334,11 +335,16 @@ export function ContentGenerator() {
                       <Save className="h-4 w-4 mr-1" />
                       Save Draft
                     </Button>
-                    <Button size="sm">
-                      <Send className="h-4 w-4 mr-1" />
-                      Schedule
-                    </Button>
                   </div>
+
+                  {/* Ayrshare Publisher */}
+                  <AyrsharePublisher
+                    content={content.content}
+                    platforms={[content.platform]}
+                    onPostComplete={(results) => {
+                      console.log("Post results:", results)
+                    }}
+                  />
                 </div>
               ))}
             </div>
@@ -374,9 +380,13 @@ export function ContentGenerator() {
                 ))}
               </div>
 
-              <Button className="w-full" variant="secondary">
-                Schedule All Posts
-              </Button>
+              <AyrsharePublisher
+                content={batchContent.map((p) => p.content).join("\n\n---\n\n")}
+                platforms={settings.platforms}
+                onPostComplete={(results) => {
+                  console.log("Batch post results:", results)
+                }}
+              />
             </div>
           ) : (
             <div className="text-center py-12 text-gray-500">

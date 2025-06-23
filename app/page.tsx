@@ -7,8 +7,9 @@ import { Scheduler } from "@/components/scheduler"
 import { AnalyticsDashboard } from "@/components/analytics-dashboard"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Sparkles, Calendar, BarChart3, Brain, Target, TrendingUp } from "lucide-react"
+import { Sparkles, Calendar, BarChart3, Brain, Target, TrendingUp, ExternalLink } from "lucide-react"
 import { Toaster } from "sonner"
+import { SocialAuth } from "@/components/social-auth"
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState("generator")
@@ -98,7 +99,7 @@ export default function Home() {
 
         {/* Main Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 lg:w-fit lg:grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5 lg:w-fit lg:grid-cols-5">
             <TabsTrigger value="generator" className="flex items-center gap-2">
               <Sparkles className="h-4 w-4" />
               <span className="hidden sm:inline">Generator</span>
@@ -110,6 +111,10 @@ export default function Home() {
             <TabsTrigger value="analytics" className="flex items-center gap-2">
               <BarChart3 className="h-4 w-4" />
               <span className="hidden sm:inline">Analytics</span>
+            </TabsTrigger>
+            <TabsTrigger value="accounts" className="flex items-center gap-2">
+              <ExternalLink className="h-4 w-4" />
+              <span className="hidden sm:inline">Accounts</span>
             </TabsTrigger>
             <TabsTrigger value="prompts" className="flex items-center gap-2">
               <Brain className="h-4 w-4" />
@@ -127,6 +132,10 @@ export default function Home() {
 
           <TabsContent value="analytics" className="space-y-6">
             <AnalyticsDashboard />
+          </TabsContent>
+
+          <TabsContent value="accounts" className="space-y-6">
+            <SocialAuth />
           </TabsContent>
 
           <TabsContent value="prompts" className="space-y-6">
