@@ -134,6 +134,14 @@ export async function POST(req: NextRequest) {
     })
   } catch (error) {
     console.error("Content generation error:", error)
-    return NextResponse.json({ success: false, error: "Failed to generate content" }, { status: 500 })
+
+    // Detect OpenAI “quota exceeded / insufficient quota” messages
+    const msg = error instanceof Error ? error.message.toLowerCase() : ""
+
+    if (msg.includes("insufficient_quota") || msg.includes("quota")) {
+      return NextResponse.json({ success: false, error: "quota_exceeded" }, { status: 429 })
+    }
+
+    return NextResponse.json({ success: false, error: "internal_error" }, { status: 500 })
   }
 }

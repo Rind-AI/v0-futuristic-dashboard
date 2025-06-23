@@ -58,6 +58,7 @@ export function ContentGenerator() {
   const [isGenerating, setIsGenerating] = useState(false)
   const [isBatchGenerating, setIsBatchGenerating] = useState(false)
   const [batchContent, setBatchContent] = useState<any[]>([])
+  const [quotaExceeded, setQuotaExceeded] = useState(false)
 
   const handlePlatformToggle = (platformId: string) => {
     setSettings((prev) => ({
@@ -80,6 +81,7 @@ export function ContentGenerator() {
     }
 
     setIsGenerating(true)
+    setQuotaExceeded(false)
 
     try {
       const response = await fetch("/api/generate-content", {
@@ -89,6 +91,12 @@ export function ContentGenerator() {
       })
 
       const data = await response.json()
+
+      if (data.error === "quota_exceeded") {
+        toast.error("OpenAI quota exceeded. Please top-up your account or use a different API key.")
+        setQuotaExceeded(true)
+        return
+      }
 
       if (data.success) {
         setGeneratedContent(data.results)
@@ -110,6 +118,7 @@ export function ContentGenerator() {
     }
 
     setIsBatchGenerating(true)
+    setQuotaExceeded(false)
 
     try {
       const response = await fetch("/api/generate-batch", {
@@ -119,6 +128,12 @@ export function ContentGenerator() {
       })
 
       const data = await response.json()
+
+      if (data.error === "quota_exceeded") {
+        toast.error("OpenAI quota exceeded. Please top-up your account or use a different API key.")
+        setQuotaExceeded(true)
+        return
+      }
 
       if (data.success) {
         setBatchContent(data.posts)
@@ -269,7 +284,7 @@ export function ContentGenerator() {
           </div>
 
           <div className="flex flex-col gap-2">
-            <Button onClick={generateContent} disabled={isGenerating} className="w-full">
+            <Button onClick={generateContent} disabled={isGenerating || quotaExceeded} className="w-full">
               {isGenerating ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -283,7 +298,12 @@ export function ContentGenerator() {
               )}
             </Button>
 
-            <Button onClick={generateBatch} disabled={isBatchGenerating} variant="secondary" className="w-full">
+            <Button
+              onClick={generateBatch}
+              disabled={isBatchGenerating || quotaExceeded}
+              variant="secondary"
+              className="w-full"
+            >
               {isBatchGenerating ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
