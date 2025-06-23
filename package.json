@@ -4,11 +4,11 @@
   "private": true,
   "scripts": {
     "build": "next build",
-    "deploy:netlify": "netlify deploy --prod",
+    "check:env": "node scripts/check-env.js",
+    "deploy": "node scripts/vercel-setup.js",
     "deploy:vercel": "vercel --prod",
     "dev": "next dev",
-    "docker:build": "docker build -t ai-social-platform .",
-    "docker:run": "docker run -p 3000:3000 ai-social-platform",
+    "env:setup": "vercel env add",
     "lint": "next lint",
     "setup": "node scripts/setup.js",
     "start": "next start"
